@@ -19,10 +19,10 @@ With this tool you can import your files from your computer directly into the ga
 - On your local computer go under the "gh-file-importer-main" folder
 - Put or write your files in the "src" folder
 - Launch the "run.bat" executable
-- Enter the right path of your game where the Grey Hack.exe is ( see the section "How to get the game path" if you have steam installed in different folder)
+- Enter the right path of your game where the Grey Hack.exe is ( see the section "How to get the installation directory" if you have steam installed in different folder)
 - Type enter and wait until the process will be completed.
 
-## How to get the game path
+## How to get the installation directory
 
 - Open Steam
 - Go under Library
