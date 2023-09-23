@@ -134,7 +134,7 @@ try {
       console.log("Attempt to update computer player data with new status...");
       fs.writeFileSync("./updated.json", JSON.stringify(rowJson, null, 4));
       doQuery("UPDATE Computer SET FileSystem = ? WHERE IsPlayer = 1", [JSON.stringify(rowJson)]);
-      console.log("\n\n\nPLAYER COMPUTER DATA UPDATED SUCCESSFULLY. NOW YOU CAN LAUNCH THE GAME :)\n\n\n");
+      console.log("\n\n\nPLAYER COMPUTER DATA UPDATED SUCCESSFULLY :)\n\n\n");
     });
   });
 } catch (e) {
