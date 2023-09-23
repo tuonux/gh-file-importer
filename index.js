@@ -1,14 +1,16 @@
+const subprocess = require("subprocess");
+const fs = require("fs");
+if (!fs.existsSync("./node_modules")) {
+  subprocess.run("npm", "install");
+}
 const sqlite3 = require("sqlite3").verbose();
 const prompt = require("prompt-sync")();
-const fs = require("fs");
 const md5 = require("md5");
 const getPrompt = (str) => {
   console.log(str);
   return prompt("> ");
 };
-
 const defaultPath = "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Grey Hack";
-
 let dbBuffer = null;
 let dbPath = null;
 console.clear();
