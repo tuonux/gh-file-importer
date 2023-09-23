@@ -12,6 +12,7 @@ With this tool you can import your files from your computer directly into the ga
 
 ## How to
 
+- Install Node.JS (https://nodejs.org/it)
 - Open the game
 - If you have FileExplorer.exe or Terminal.exe openend in the game close both
 - Download this repository
