@@ -1,0 +1,6 @@
+node_modules
+.vscode
+src/*.*
+!src/.gitkeep
+config.ini
+package-lock.json

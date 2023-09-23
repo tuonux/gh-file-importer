@@ -1,0 +1,16 @@
+{
+  "name": "gh-importer",
+  "version": "1.0.0",
+  "description": "Import files in the Grey Hack SQLite db",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "tuonux",
+  "license": "ISC",
+  "dependencies": {
+    "md5": "^2.3.0",
+    "prompt-sync": "^4.2.0",
+    "sqlite3": "^5.1.6"
+  }
+}
