@@ -151,7 +151,6 @@ try {
       }
       console.log("/home/" + username + " ready to be imported.");
       console.log("Attempt to update game computer data with the updated status...");
-      fs.writeFileSync("./updated.json", JSON.stringify(rowJson, null, 4));
       doQuery("UPDATE Computer SET FileSystem = ? WHERE IsPlayer = 1", [JSON.stringify(rowJson)]);
       console.log("===========================================================================================");
       console.log("\n\nPLAYER COMPUTER DATA UPDATED SUCCESSFULLY :)\n\n");
