@@ -19,22 +19,27 @@ let dbBuffer = null;
 let dbPath = null;
 const firstTimeSetup = () => {
   if (!fs.existsSync("./node_modules")) {
+    console.log("===========================================================================================");
+    console.log("First time installation.");
     console.log("Attempt to install required Node.JS modules...");
     execSync("npm install");
-    console.log("\nDone.");
-    sqlite3 = require("sqlite3").verbose();
-    prompt = require("prompt-sync")();
-    md5 = require("md5");
-    const defaultPath = "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Grey Hack";
-    console.log("\n\nGet Grey Hack installation path.\nYou can get the installation path under: Steam App -> Library -> Right click on Grey Hack -> Properties -> Installed Files -> Browse\n" + "Then copy the path from the explorer address bar and paste here\n");
-    console.log("Default is: C:\\Program Files (x86)\\Steam\\steamapps\\common\\Grey Hack\n");
-    let gamePath = defaultPath;
-    const iDirectory = getPrompt("Enter the game path (leave empty for default)");
-    if (iDirectory != "") gamePath = iDirectory;
-    dbPath = (gamePath + "\\Grey Hack_Data\\GreyHackDB.db").split(/\ /).join(" ");
+    console.log("Done.");
   }
+  sqlite3 = require("sqlite3").verbose();
+  prompt = require("prompt-sync")();
+  md5 = require("md5");
+  const defaultPath = "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Grey Hack";
+  console.log("===========================================================================================");
+  console.log("\nGet Grey Hack installation path.\nYou can get the installation path under: Steam App -> Library -> Right click on Grey Hack -> Properties -> Installed Files -> Browse\n" + "Then copy the path from the explorer address bar and paste here\n");
+  console.log("Default is: C:\\Program Files (x86)\\Steam\\steamapps\\common\\Grey Hack\n");
+  console.log("===========================================================================================");
+  let gamePath = defaultPath;
+  const iDirectory = getPrompt("Enter the game path (leave empty for default)");
+  if (iDirectory != "") gamePath = iDirectory;
+  dbPath = (gamePath + "\\Grey Hack_Data\\GreyHackDB.db").split(/\ /).join(" ");
+  fs.writeFileSync("./config.ini", dbPath);
 };
-if (!fs.existsSync("./node_modules")) {
+if (!fs.existsSync("./node_modules") || !fs.existsSync("./config.ini")) {
   firstTimeSetup();
 } else {
   sqlite3 = require("sqlite3").verbose();
@@ -45,13 +50,18 @@ dbPath = fs.readFileSync("./config.ini").toString();
 console.log("===========================================================================================");
 try {
   console.log("Attempt to get DB buffer...");
+  if (!fs.existsSync(dbPath)) throw "Invalid db path provided.";
   dbBuffer = fs.readFileSync(dbPath);
   fs.writeFileSync("./config.ini", dbPath.toString());
   console.log("Saved ./config.ini with Grey Hack DB path for future imports");
-} catch {
-  dbBuffer = null;
-  dbPath = null;
-  console.log("\n!!! Something goes wrong, repeat the steps !!!\n");
+} catch (e) {
+  console.log("===========================================================================================");
+  console.log("\n!!! Something goes wrong. Aborted !!!\n");
+  console.log("===========================================================================================");
+  console.log(e);
+  console.log("===========================================================================================");
+  fs.rmSync("./config.ini");
+  process.exit();
 }
 console.log(dbBuffer);
 console.log("Grey Hack DB Found!");
