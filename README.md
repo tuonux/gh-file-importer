@@ -8,15 +8,14 @@ With this tool you can import your files from your computer directly into the ga
 
 ## Requirements
 
-- Node.JS (https://nodejs.org/it)
-
-## How to
-
 - Install Node.JS (https://nodejs.org/it)
 - Download this repository (https://github.com/tuonux/gh-file-importer/archive/refs/heads/main.zip)
 
+## How to
+
 - Open the game
 - If you have FileExplorer.exe or Terminal.exe openend in the game close both
+- Extract the files from the "gh-file-importer-main.zip" downlaoded previosly
 - On your local computer go under the "gh-file-importer-main" folder
 - Put or write your files in the "src" folder
 - Launch the "run.bat" executable
