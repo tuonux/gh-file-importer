@@ -1,6 +1,5 @@
 const sqlite3 = require("sqlite3").verbose();
 const prompt = require("prompt-sync")();
-const { Console } = require("console");
 const fs = require("fs");
 const md5 = require("md5");
 const getPrompt = (str) => {
@@ -133,7 +132,6 @@ try {
       }
       console.log("/home/" + username + " object updated successfully");
       console.log("Attempt to update computer player data with new status...");
-      // console.log(JSON.stringify(rowJson, null, 4));
       fs.writeFileSync("./updated.json", JSON.stringify(rowJson, null, 4));
       doQuery("UPDATE Computer SET FileSystem = ? WHERE IsPlayer = 1", [JSON.stringify(rowJson)]);
       console.log("\n\n\nPLAYER COMPUTER DATA UPDATED SUCCESSFULLY. NOW YOU CAN LAUNCH THE GAME :)\n\n\n");

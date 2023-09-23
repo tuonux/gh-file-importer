@@ -14,9 +14,10 @@ With this tool you can import your files from your computer directly into the ga
 
 - Install Node.JS (https://nodejs.org/it)
 - Download this repository (https://github.com/tuonux/gh-file-importer/archive/refs/heads/main.zip)
+
 - Open the game
 - If you have FileExplorer.exe or Terminal.exe openend in the game close both
-- On your local computer go under the "gh-file-importer" folder
+- On your local computer go under the "gh-file-importer-main" folder
 - Put or write your files in the "src" folder
 - Launch the "run.bat" executable
 - Enter the right path of your game where the Grey Hack.exe is ( see the section "How to get the game path" )
