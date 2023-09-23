@@ -1,8 +1,6 @@
-const { exec } = require("child_process");
+const execSync = require("child_process").execSync;
 const fs = require("fs");
-if (!fs.existsSync("./node_modules")) {
-  exec("npm install");
-}
+if (!fs.existsSync("./node_modules")) execSync("npm install");
 const sqlite3 = require("sqlite3").verbose();
 const prompt = require("prompt-sync")();
 const md5 = require("md5");
