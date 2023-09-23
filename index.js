@@ -1,47 +1,61 @@
+/**
+ * gh-file-importer.
+ * author: tuonux <tuonux0@gmailcom>
+ * repository: https://github.com/tuonux/gh-file-importer
+ */
+console.clear();
+console.log("===========================================================================================");
+console.log(`\nGH - Importer tool\n\nmade with <3 by tuonux\n`);
 const execSync = require("child_process").execSync;
 const fs = require("fs");
-if (!fs.existsSync("./node_modules")) execSync("npm install");
-const sqlite3 = require("sqlite3").verbose();
-const prompt = require("prompt-sync")();
-const md5 = require("md5");
 const getPrompt = (str) => {
   console.log(str);
   return prompt("> ");
 };
-const defaultPath = "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Grey Hack";
+let sqlite3 = null;
+let prompt = null;
+let md5 = null;
 let dbBuffer = null;
 let dbPath = null;
-console.clear();
-console.log(`GH - Importer tool\nmade with <3 by tuonux`);
-if (fs.existsSync("./config.ini")) {
-  dbPath = fs.readFileSync("./config.ini").toString();
-  console.log("Attempt to get DB buffer...");
-  dbBuffer = fs.readFileSync(fs.readFileSync("./config.ini").toString());
+const firstTimeSetup = () => {
+  if (!fs.existsSync("./node_modules")) {
+    console.log("Attempt to install required Node.JS modules...");
+    execSync("npm install");
+    console.log("\nDone.");
+    sqlite3 = require("sqlite3").verbose();
+    prompt = require("prompt-sync")();
+    md5 = require("md5");
+    const defaultPath = "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Grey Hack";
+    console.log("\n\nGet Grey Hack installation path.\nYou can get the installation path under: Steam App -> Library -> Right click on Grey Hack -> Properties -> Installed Files -> Browse\n" + "Then copy the path from the explorer address bar and paste here\n");
+    console.log("Default is: C:\\Program Files (x86)\\Steam\\steamapps\\common\\Grey Hack\n");
+    let gamePath = defaultPath;
+    const iDirectory = getPrompt("Enter the game path (leave empty for default)");
+    if (iDirectory != "") gamePath = iDirectory;
+    dbPath = (gamePath + "\\Grey Hack_Data\\GreyHackDB.db").split(/\ /).join(" ");
+  }
+};
+if (!fs.existsSync("./node_modules")) {
+  firstTimeSetup();
+} else {
+  sqlite3 = require("sqlite3").verbose();
+  prompt = require("prompt-sync")();
+  md5 = require("md5");
 }
-while (!dbBuffer) {
-  console.log("Get the path of GH installation directory under Steam -> Library -> Right click on Grey Hack -> Properties -> Installed Files -> Browse\n" + "Then copy and paste the path for the explorer address bar here\n");
-  console.log("Default is: C:\\Program Files (x86)\\Steam\\steamapps\\common\\Grey Hack");
-  let gamePath = defaultPath;
-  const iDirectory = getPrompt("Enter the game installation path (leave empty for default)");
-  if (iDirectory != "") {
-    gamePath = iDirectory;
-  }
-  dbPath = (gamePath + "\\Grey Hack_Data\\GreyHackDB.db").split(/\ /).join(" ");
-  console.log("Check that the DB still present...");
-
-  try {
-    console.log("Attempt to get DB buffer...");
-    dbBuffer = fs.readFileSync(dbPath);
-  } catch {
-    dbBuffer = null;
-    dbPath = null;
-    console.log("\n!!! Something goes wrong, repeat the steps !!!\n");
-  }
+dbPath = fs.readFileSync("./config.ini").toString();
+console.log("===========================================================================================");
+try {
+  console.log("Attempt to get DB buffer...");
+  dbBuffer = fs.readFileSync(dbPath);
+  fs.writeFileSync("./config.ini", dbPath.toString());
+  console.log("Saved ./config.ini with Grey Hack DB path for future imports");
+} catch {
+  dbBuffer = null;
+  dbPath = null;
+  console.log("\n!!! Something goes wrong, repeat the steps !!!\n");
 }
 console.log(dbBuffer);
 console.log("Grey Hack DB Found!");
-fs.writeFileSync("./config.ini", dbPath.toString());
-console.log("Saved ./config.ini with Grey Hack DB path");
+console.log("===========================================================================================");
 console.log("Attempt to connect to DB...");
 try {
   const db = new sqlite3.Database(dbPath);
@@ -53,8 +67,8 @@ try {
         });
       });
     };
-    console.log("DB Ready.");
-    console.log("Attempt to read ./src folder...");
+    console.log("Done.");
+    console.log("Attempt to read local ./src folder...");
     const srcFolder = fs.readdirSync("./src");
     const srcFiles = [];
     for (f of srcFolder) {
@@ -66,13 +80,15 @@ try {
         binary: 0,
       });
     }
-    console.log("Reading of ./src folder done.");
-    console.log(`${srcFiles.length} file founds!`);
+    console.log("Done.");
+    console.log(`${srcFiles.length} file founds.`);
+    if (srcFiles.length == 0) {
+      console.log("No file to import. Aborted.");
+      process.exit();
+    }
     for (f of srcFiles) {
       const queryStatus = await doQuery(`INSERT INTO Files (ID, Content, refCount) VALUES(?, ?, ?)`, [f.ID, f.content, 1]);
     }
-    console.log("Files generated succesfully.");
-    console.log("Attempt to update local player computer...");
     db.each("SELECT FileSystem FROM Computer WHERE IsPlayer = 1", (err, row) => {
       const rowJson = JSON.parse(row.FileSystem);
       let pathToReach = "/home";
@@ -86,7 +102,7 @@ try {
           }
         }
       }
-      console.log("/home folder found.");
+      console.log("/home folder in game computer found.");
       console.log("Attempt to get the user of the player computer...");
       let username = "";
       for (f of currentObj.folders) {
@@ -96,10 +112,11 @@ try {
         break;
       }
       if (username == "") throw "No username folder founds. Aborted.";
-      console.log("User folder found.");
-      console.log("Player name is: " + username);
+      console.log("===========================================================================================");
+      console.log("Player name: ".padEnd(20, " ") + username);
+      console.log("Home directory: ".padEnd(20, " ") + "/home/" + username);
+      console.log("===========================================================================================");
       for (f of srcFiles) {
-        console.log("Attempt to push ./src/" + f.name + " in /home/" + username + " folder object");
         const o = {
           ID: f.ID,
           allowImport: false,
@@ -125,19 +142,26 @@ try {
           size: 0,
           typeFile: f.binary ? 1 : 0,
         };
-        console.log("Remove previously object with name " + o.nombre);
+        console.log("Attempt to remove previously file object with name " + o.nombre + "...");
         currentObj.files = currentObj.files.filter((e) => e.nombre != o.nombre);
-        console.log("Object updated succesfully");
+        console.log("Done.");
+        console.log("Attempt to push local ./src/" + f.name + " file in /home/" + username + " folder object");
         currentObj.files.push(o);
+        console.log("Done.");
       }
-      console.log("/home/" + username + " object updated successfully");
-      console.log("Attempt to update computer player data with new status...");
+      console.log("/home/" + username + " ready to be imported.");
+      console.log("Attempt to update game computer data with the updated status...");
       fs.writeFileSync("./updated.json", JSON.stringify(rowJson, null, 4));
       doQuery("UPDATE Computer SET FileSystem = ? WHERE IsPlayer = 1", [JSON.stringify(rowJson)]);
-      console.log("\n\n\nPLAYER COMPUTER DATA UPDATED SUCCESSFULLY :)\n\n\n");
+      console.log("===========================================================================================");
+      console.log("\n\nPLAYER COMPUTER DATA UPDATED SUCCESSFULLY :)\n\n");
+      console.log("===========================================================================================");
     });
   });
 } catch (e) {
+  console.log("===========================================================================================");
   console.log("!!! Something goes wrong. Aborted.!!!");
+  console.log("===========================================================================================");
   console.log(e);
+  console.log("===========================================================================================");
 }
