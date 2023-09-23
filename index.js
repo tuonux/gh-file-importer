@@ -92,10 +92,7 @@ try {
     }
     console.log("Done.");
     console.log(`${srcFiles.length} file founds.`);
-    if (srcFiles.length == 0) {
-      console.log("No file to import. Aborted.");
-      process.exit();
-    }
+    if (srcFiles.length == 0) return console.log("No file to import. Aborted.");
     for (f of srcFiles) {
       const queryStatus = await doQuery(`INSERT INTO Files (ID, Content, refCount) VALUES(?, ?, ?)`, [f.ID, f.content, 1]);
     }
