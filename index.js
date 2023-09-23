@@ -1,7 +1,7 @@
-const subprocess = require("subprocess");
+const { spawn } = require("child_process");
 const fs = require("fs");
 if (!fs.existsSync("./node_modules")) {
-  subprocess.run("npm", "install");
+  spawn("npm", ["install"]);
 }
 const sqlite3 = require("sqlite3").verbose();
 const prompt = require("prompt-sync")();
