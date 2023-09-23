@@ -1,10 +1,18 @@
 # GH File importer
 
-Author: tuonux \<tuonux0@gmail.com\>
+Author: tuonux
 
-With this tool you can import your files from your computer directly into the game.
+Really fast importer that allow you to import your files from the "./src" local folder in the /home/\<user\> game folder.
 
 **NB: Text file only, not images or something or will write the raw big data of them**
+
+# Features:
+
+- After the first usage, just put files in ./src folder and then all need to do it's double click on run.bat
+- Fast data manipulation
+- No duplication in game or in background
+- Usable for developer if you want and integrable under Visual Studio Code through the power of Node.JS and npm commands
+- No need to close the game
 
 ## Requirements
 
