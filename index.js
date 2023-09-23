@@ -151,7 +151,7 @@ try {
         };
         console.log("Attempt to remove previously file object with name " + o.nombre + "...");
         const oldFile = currentObj.files.find((e) => e.nombre == o.nombre);
-        doQuery("DELETE FROM Files WHERE ID = ?", [oldFile.ID]);
+        if (typeof oldFile != "undefined") doQuery("DELETE FROM Files WHERE ID = ?", [oldFile.ID]);
         currentObj.files = currentObj.files.filter((e) => e.nombre != o.nombre);
         console.log("Done.");
         console.log("Attempt to push local ./src/" + f.name + " file in /home/" + username + " folder object");
