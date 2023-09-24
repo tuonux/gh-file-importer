@@ -27,18 +27,6 @@ Really fast importer that allow you to import your files from the "./src" local 
 - On your local computer go under the "gh-file-importer-main" folder
 - Put or write your files in the "src" folder
 - Launch the "run.bat" executable
-- Enter the right path of your game where the Grey Hack.exe is ( see the section "How to get the installation directory" if you have steam installed in different folder)
-- Type enter and wait until the process will be completed.
-
-## How to get the installation directory
-
-- Open Steam
-- Go under Library
-- Right click on Grey Hack
-- Click on Properties
-- Click on "Installed Files"
-- Click "Browse" button
-- Copy the path in the explorer window
 
 ## License
 

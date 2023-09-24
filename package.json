@@ -6,11 +6,12 @@
   "scripts": {
     "start": "node index.js"
   },
+  "type": "module",
   "author": "tuonux",
   "license": "ISC",
   "dependencies": {
     "md5": "^2.3.0",
-    "prompt-sync": "^4.2.0",
+    "regedit": "^5.1.2",
     "sqlite3": "^5.1.6"
   }
 }
