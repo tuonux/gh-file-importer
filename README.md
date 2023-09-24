@@ -8,7 +8,7 @@ Really fast importer that allow you to import your files from the "./src" local 
 
 # Features:
 
-- Easy to use: Just put files in ./src folder and then all need to do it's double click on run.bat
+- Easy to use: Just put files in ./src folder and then all you need to do it's double click on run.bat
 - Fast data manipulation
 - No duplication in game or in background
 - Usable for developer if you want and integrable under Visual Studio Code through the power of Node.JS and npm commands
