@@ -169,6 +169,7 @@ class GhFileImporter {
     if (typeof oldFile != "undefined") {
       await this.executeQuery("DELETE FROM Files WHERE ID = ?", [oldFile.ID]);
     }
+    this.currentObj.files = this.currentObj.files.filter((e) => e.nombre != o.nombre);
   }
   async insertSrcFilesIntoDb() {
     console.log("===========================================================================================");
