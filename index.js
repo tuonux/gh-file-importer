@@ -42,8 +42,6 @@ class GhFileImporter {
     console.log("===========================================================================================");
     console.log("Load md5 module..");
     this.md5 = (await import("md5")).default;
-    console.log("Load regedit module..");
-    this.regedit = (await import("regedit")).default.promisified;
     console.log("Load sqlite3 module..");
     this.sqlite = (await import("sqlite3")).default.verbose();
     return true;
@@ -68,8 +66,8 @@ class GhFileImporter {
   async getDbPath() {
     console.log("===========================================================================================");
     console.log("Get Grey Hack DB path");
-    const steamRegistryKey = await this.regedit.list(["HKCU\\SOFTWARE\\Valve\\Steam"]);
-    this.dbPath = steamRegistryKey["HKCU\\SOFTWARE\\Valve\\Steam"].values.SteamPath.value + "\\steamapps\\common\\Grey Hack\\Grey Hack_Data\\GreyHackDB.db";
+    const linuxDbLocation = this.fs.readFileSync("./dbpath").toString();
+    this.dbPath = linuxDbLocation + "/Grey Hack_Data/GreyHackDB.db";
   }
   async connectToDb() {
     console.log("===========================================================================================");
