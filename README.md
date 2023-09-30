@@ -25,8 +25,11 @@ Really fast importer that allow you to import your files from the "./src" local 
 - If you have FileExplorer.exe or Terminal.exe openend in the game close both
 - Extract the files from the "gh-file-importer-main.zip" downlaoded previosly
 - On your local computer go under the "gh-file-importer-main" folder
+- Edit the "dbpath" file and enter the correct location of your Game Hack installation path
 - Put or write your files in the "src" folder
-- Launch the "run.bat" executable
+- Open a linux terminal inside the "gh-file-importer-main" folder
+- Give executable permissions to run.sh with: chmod +x run.sh
+- Launch run.sh with ./run.sh
 
 ## License
 
